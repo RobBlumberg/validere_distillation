@@ -10,6 +10,8 @@ Two separate regressions can be performed on two separate crude oils to yield tw
 
 The physical assumption made by this model is that the molecules from each crude evaporate under the same probabilistic distributions as they did when unmixed.
 
+A more detailed explanation of the modelling and assumptions can be found in the [`distillation-profile.ipynb` notebook](https://github.com/RobBlumberg/validere_distillation/blob/master/src/distillation-profile.ipynb).
+
 ## Usage
 
 **get_distillation_profile**
@@ -35,7 +37,7 @@ The `gamma_fit` function fits a gamma CDF to a specified crude oil's distillatio
 
 **gamma_mixture_distillation_profile**
 
-The `gamma_mixture_distillation_profile` function fits a gamma CDF to each specified crude oil's distillation profile data from https://crudemonitor.ca/home.php. Again, the function calls `get_distillation_profile` internally on each specified crude, and so the fitting can be performed directly without calling any other function. Once fit individual, the function performs a weighted sum of the gamma CDFs using the specified volumnes of each crude to yield the gamma mixture model for the crude oil mixture.
+The `gamma_mixture_distillation_profile` function fits a gamma CDF to each specified crude oil's distillation profile data from https://crudemonitor.ca/home.php. Again, the function calls `get_distillation_profile` internally on each specified crude, and so the fitting can be performed directly without calling any other function. Once the individual crudes are fit, the function performs a weighted sum of the gamma CDFs using the specified volumnes of each crude to yield the gamma mixture model for the crude oil mixture.
 
 ```python
 >>> from distillation_profile_fitting import gamma_mixture_distillation_profile
