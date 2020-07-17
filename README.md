@@ -8,7 +8,7 @@ Previous research (See [here](https://digital.library.adelaide.edu.au/dspace/bit
 
 Two separate regressions can be performed on two separate crude oils to yield two distillation profile curves. If these two crudes are then mixed, we can simply sum the individial gamma distributions, weighted by the volumes of each oil in the mixture, to obtain a gamma mixture model, which represents the distillation curve of the crude mixture.
 
-The physical assumption made by this model is that the molecules from each crude evaporate under the same probabilistic distributions as they did when unmixed.
+The main assumption made by this model is that the molecules from each crude evaporate under the same probabilistic distributions as they did when unmixed.
 
 A more detailed explanation of the modelling and assumptions can be found in the [`distillation-profile.ipynb` notebook](https://github.com/RobBlumberg/validere_distillation/blob/master/src/distillation-profile.ipynb).
 
@@ -37,7 +37,7 @@ The `gamma_fit` function fits a gamma CDF to a specified crude oil's distillatio
 
 **gamma_mixture_distillation_profile**
 
-The `gamma_mixture_distillation_profile` function fits a gamma CDF to each specified crude oil's distillation profile data from https://crudemonitor.ca/home.php. Again, the function calls `get_distillation_profile` internally on each specified crude, and so the fitting can be performed directly without calling any other function. Once the individual crudes are fit, the function performs a weighted sum of the gamma CDFs using the specified volumnes of each crude to yield the gamma mixture model for the crude oil mixture.
+The `gamma_mixture_distillation_profile` function fits a gamma CDF to each specified crude oil's distillation profile data from https://crudemonitor.ca/home.php. Again, the function calls `get_distillation_profile` internally on each specified crude, and so the fitting can be performed directly without calling any other function. Once the individual crudes are fit, the function performs a weighted sum of the gamma CDFs using the specified volumes of each crude to yield the gamma mixture model for the crude oil mixture.
 
 ```python
 >>> from distillation_profile_fitting import gamma_mixture_distillation_profile
