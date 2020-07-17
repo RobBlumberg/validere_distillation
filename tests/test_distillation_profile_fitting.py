@@ -36,7 +36,7 @@ def test_gamma_mixture_df():
     results = gamma_mixture_distillation_profile(crude1, crude2, vol1, vol2)
 
     assert results[0].shape == (11, 2), \
-        "Function should return a data frame of shape 13x2."
+        "Function should return a data frame of shape 11x2."
 
 
 def test_gamma_mixture_plot():
