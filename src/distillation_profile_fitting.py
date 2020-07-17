@@ -3,6 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy.stats
 from scipy.optimize import curve_fit
+import sys
+sys.path.insert(0, "src")
 from get_distillation_profile import get_distillation_profile
 
 
@@ -38,18 +40,22 @@ def gamma_fit(crude_name, ax, date="recent"):
     >>> crude = "MGS"
     >>> date = "recent"
     >>> fig, ax = plt.subplots(1, 1, figsize=(10, 6))
-    >>> get_distillation_profile(crude, ax, date)
+    >>> gamma_fit(crude, ax, date)
     """
-    
     crude_df = get_distillation_profile(crude_name, date=date)
+    if crude_df is None:
+        return
+
     temp = crude_df["Temperature( oC )"].dropna()
-    distilled = [float(x) / 100 if x != "IBP" else 0 for x in list(crude_df.index)][0:len(temp)]
+    distilled = [float(x) / 100 if x != "IBP" else 0 
+                 for x in list(crude_df.index)][0:len(temp)]
 
     f = lambda temp, a, b: scipy.stats.gamma(a=a, scale=b).cdf(temp)
     fit_params, cov_matrix = curve_fit(f, temp, distilled, p0=[5, 60])
     
     temps = np.linspace(0, max(temp), 1000)
-    fit_vals = scipy.stats.gamma(a=fit_params[0], scale=fit_params[1]).cdf(temps)
+    fit_vals = scipy.stats.gamma(a=fit_params[0], 
+                                 scale=fit_params[1]).cdf(temps)
     
     ax.scatter(temp, distilled)
     ax.plot(temps, fit_vals, color="red")
@@ -58,7 +64,7 @@ def gamma_fit(crude_name, ax, date="recent"):
     ax.tick_params(labelsize=16)
     ax.annotate(f"Gamma fit params: \n" + 
                 "---------------------------\n" +
-                f"alpha : {fit_params[0]:.3f}\nbeta : {fit_params[1]:.3f}", 
+                f"alpha : {fit_params[0]:.3f}\nbeta : {fit_params[1]:.3f}",
                 xy=(0, 0.75), 
                 size=16)
     ax.set_ylim(-0.05, 1)
@@ -92,14 +98,19 @@ def gamma_mixture_distillation_profile(crude1, crude2, vol1, vol2):
     Returns:
     --------
     tuple : (pandas.DataFrame, matplotlib.figure.Figure)
-        - DataFrame storing distillation profile of mixtue
+        - DataFrame storing distillation profile of mixture
         - Matplotlib object on which fitted curves are plotted.
+
+    Examples:
+    ---------
+    >>> crude1 = "MGS"
+    >>> crude2 = "RA"
+    >>> vol1 = 10
+    >>> vol2 = 5
+    >>> gamma_mixture_distillation_profile(crude1, crude2, vol1, vol2)
     """
     assert vol1 >=0 and vol2 >=0, \
         "Specified volumues 'vol1' and 'vol2' must be positive."
-    
-    crude1_df = get_distillation_profile(crude1)
-    crude2_df = get_distillation_profile(crude2)
 
     fig, ax = plt.subplots(1, 3, figsize=(20, 6))
     try:
@@ -117,8 +128,10 @@ def gamma_mixture_distillation_profile(crude1, crude2, vol1, vol2):
     total_vol = vol1 + vol2
     
     temps = np.linspace(0, 1000, 1000)
-    mixture_model = (vol1 / total_vol)*scipy.stats.gamma(a=fit_params1[0], scale=fit_params1[1]).cdf(temps) + \
-                    (vol2 / total_vol)*scipy.stats.gamma(a=fit_params2[0], scale=fit_params2[1]).cdf(temps)
+    mixture_model = (vol1 / total_vol)*scipy.stats.gamma(a=fit_params1[0], 
+                                                         scale=fit_params1[1]).cdf(temps) + \
+                    (vol2 / total_vol)*scipy.stats.gamma(a=fit_params2[0], 
+                                                         scale=fit_params2[1]).cdf(temps)
 
     ax[2].plot(temps, mixture_model, color="red")
     ax[2].set_xlabel("Temperature (oC)", size=16)
@@ -137,5 +150,5 @@ def gamma_mixture_distillation_profile(crude1, crude2, vol1, vol2):
     
     mixture_distillation_profile_df = pd.DataFrame({"Mass % Recovered" : distilliation_percentages,
                                                     "Temperature (oC)" : temps})
-        
+
     return mixture_distillation_profile_df, fig
