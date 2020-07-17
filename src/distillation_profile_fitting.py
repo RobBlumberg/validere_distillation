@@ -146,8 +146,8 @@ def gamma_mixture_distillation_profile(crude1, crude2, vol1, vol2):
     ax[2].tick_params(labelsize=16)
     ax[2].annotate(f"Gamma mixture model: \n" +
                    "---------------------------\n" +
-                   f"{vol1 / total_vol :.2f} F({crude1})" +
-                   f"\n{vol2 / total_vol :.2f} F({crude2})",
+                   f"{vol1 / total_vol :.2f} x F({crude1}) + " +
+                   f"\n{vol2 / total_vol :.2f} x F({crude2})",
                    xy=(0, 0.75),
                    size=16)
     ax[2].set_title("Crude Mixture Distillation Profile", size=16)
