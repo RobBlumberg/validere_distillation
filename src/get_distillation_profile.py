@@ -9,7 +9,7 @@ def get_distillation_profile(crude_name, date="recent"):
     """
     Retrieve distillation profile of specified crude
     from https://crudemonitor.ca/home.php.
-    
+
     Arguments:
     ----------
     crude_name : str
@@ -18,12 +18,12 @@ def get_distillation_profile(crude_name, date="recent"):
         Date for which to get distillation profile.
         Must be in format 'YYYY-MM-DD' or 'recent'.
         Defaults to 'recent'.
-        
+
     Returns:
     --------
     pandas.DataFrame
         Dataframe storing distillation profile of specified crude.
-        
+
     Examples:
     ---------
     >>> crude = "MGS"
@@ -34,14 +34,18 @@ def get_distillation_profile(crude_name, date="recent"):
     assert date == "recent" or re.match("\\d\\d\\d\\d-\\d\\d-\\d\\d", date), \
         "date must be either 'recent' or in format YYYY-MM-DD"
 
+    # send requests to webpage and parse html
     webpage = f"https://crudemonitor.ca/crudes/dist.php?"
     params = f"acr={crude_name}&time={date}"
     distillation_data = requests.get(webpage + params)
     soup = BeautifulSoup(distillation_data.text, "lxml")
 
+    # error messages sent back by webpage if request invalid
     err_msg1 = "No crudes match the given acronym."
     if soup.text[-34:] == err_msg1:
-        print(f"No distillation samples available for specified crude '{crude_name}'.")
+        message = f"No distillation samples available for specified crude" + \
+                  f"'{crude_name}'."
+        print(message)
         return
 
     err_msg2 = "No distillation samples available."
@@ -49,11 +53,12 @@ def get_distillation_profile(crude_name, date="recent"):
         print("No distillation samples available for specified date.")
         return
 
-    class_name = {"class" : "table table-sm table-striped"}
+    # parse through distillation profile table
+    class_name = {"class": "table table-sm table-striped"}
     for table in soup.find_all("table", class_name):
 
-        for th in table.find_all("tr", {"id" : "tableHeadRow"}):
-            headers = re.findall("[^\n]*" , th.text)
+        for th in table.find_all("tr", {"id": "tableHeadRow"}):
+            headers = re.findall("[^\n]*", th.text)
 
         row_list = []
         index_list = []
@@ -69,12 +74,13 @@ def get_distillation_profile(crude_name, date="recent"):
 
     if headers is not None:
         headers = [x for x in headers if x != ""]
-    
-    dp_df = pd.DataFrame(data=row_list[1:], 
-                         columns=headers[1:], 
+
+    dp_df = pd.DataFrame(data=row_list[1:],
+                         columns=headers[1:],
                          index=index_list[1:])
-    
-    celsius_cols = ["Temperature( oC )", 
+
+    # only keep celsius columns
+    celsius_cols = ["Temperature( oC )",
                     "Average( oC )",
                     "Standard Deviation( oC )"]
     return dp_df.replace("-", np.nan).astype(float)[celsius_cols]
