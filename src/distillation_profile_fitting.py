@@ -134,7 +134,7 @@ def gamma_mixture_distillation_profile(crude1, crude2, vol1, vol2):
 
     # create gamma mixture model using volumes and CDFs
     total_vol = vol1 + vol2
-    temps = np.linspace(0, 1000, 1000)
+    temps = np.linspace(0, 1500, 1500)
     mixture_model = ((vol1 / total_vol)*scipy.stats.gamma(a=fit_params1[0],
                                                           scale=fit_params1[1])
                                                    .cdf(temps)) + \
@@ -148,11 +148,12 @@ def gamma_mixture_distillation_profile(crude1, crude2, vol1, vol2):
     ax[2].set_ylabel("Mass % Recovered", size=16)
     ax[2].tick_params(labelsize=16)
     ax[2].annotate(f"Gamma mixture model: \n" +
-                   "---------------------------\n" +
+                   "----------------------------------\n" +
                    f"{vol1 / total_vol :.2f} x F({crude1}) + " +
                    f"\n{vol2 / total_vol :.2f} x F({crude2})",
-                   xy=(0, 0.75),
-                   size=16)
+                   xy=(500, 0),
+                   size=16,
+                   horizontalalignment = "left")
     ax[2].set_title("Crude Mixture Distillation Profile", size=16)
     ax[2].set_ylim(-0.05, 1)
 
