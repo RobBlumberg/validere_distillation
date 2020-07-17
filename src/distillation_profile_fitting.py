@@ -18,7 +18,7 @@ def gamma_fit(crude_name, ax, date="recent"):
     ----------
     crude_name : str
         acronym of crude
-    ax : matplotlib.axes._subplots.AxesSubplot
+    ax : matplotlib.axes.Axes
         object on which to plot fit results
     date : str
         Date for which to get distillation profile.
@@ -28,7 +28,7 @@ def gamma_fit(crude_name, ax, date="recent"):
     Returns:
     --------
     tuple : (numpy.ndarray, numpy.ndarray, numpy.ndarray,
-             matplotlib.axes._subplots.AxesSubplot)
+             matplotlib.axes.Axes)
         - Fit parameters from scipy.optimize.curve_fit.
         - Covariance matrix from scipy.optimize.curve_fit.
         - Values which define fit curve.
@@ -36,6 +36,8 @@ def gamma_fit(crude_name, ax, date="recent"):
 
     Examples:
     ---------
+    >>> from distillation_profile_fitting import gamma_fit
+    >>> import matplotlib.pyplot as plt
     >>> crude = "MGS"
     >>> date = "recent"
     >>> fig, ax = plt.subplots(1, 1, figsize=(10, 6))
@@ -106,6 +108,7 @@ def gamma_mixture_distillation_profile(crude1, crude2, vol1, vol2):
 
     Examples:
     ---------
+    >>> from distillation_profile_fitting import gamma_mixture_distillation_profile
     >>> crude1 = "MGS"
     >>> crude2 = "RA"
     >>> vol1 = 10
