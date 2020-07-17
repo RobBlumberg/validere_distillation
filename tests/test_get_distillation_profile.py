@@ -1,5 +1,6 @@
 from src.get_distillation_profile import get_distillation_profile
 
+
 def test_invalid_crude():
     crude = "ABC"
     date = "recent"
@@ -7,6 +8,7 @@ def test_invalid_crude():
 
     assert dp is None, \
         "Function should not return anything for invalid crude acronym."
+
 
 def test_invalid_date():
     crude = "RA"
@@ -16,6 +18,7 @@ def test_invalid_date():
     except AssertionError:
         print("Function should throw assertion error for invalid date.")
 
+
 def test_valid_crude():
     crude = "RA"
     date = "recent"
@@ -23,6 +26,7 @@ def test_valid_crude():
 
     assert dp_df.shape == (13, 3), \
         "Function should return a data frame of shape 13x3."
+
 
 def test_date():
     crude = "RA"
