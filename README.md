@@ -27,7 +27,7 @@ The `get_distillation_profile` function takes a crude acronym (See [here](https:
 
 **gamma_fit**
 
-The `gamma_fit` function fits a gamma CDF to a specified crude oil's distillation profile data from https://crudemonitor.ca/home.php. The function calls `get_distillation_profile` internally, and so the fit can be performed directly without calling any other function, as shown below. It is necessary to pass in a matplotlib `ax` object on which the results are plotted.
+The `gamma_fit` function fits a gamma CDF to a specified crude oil's distillation profile data from https://crudemonitor.ca/home.php. The function calls `get_distillation_profile` internally, and so the fit can be performed directly without calling any other function, as shown below. It is necessary to pass in a `matplotlib.axes.Axes` object on which the results are plotted.
 
 ```python
 >>> from distillation_profile_fitting import gamma_fit
