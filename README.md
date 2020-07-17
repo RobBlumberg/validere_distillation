@@ -31,6 +31,7 @@ The `gamma_fit` function fits a gamma CDF to a specified crude oil's distillatio
 
 ```python
 >>> from distillation_profile_fitting import gamma_fit
+>>> import matplotlib.pyplot as plt
 >>> fig, ax = plt.subplots(1, 1, figsize=(10, 6))
 >>> results = gamma_fit("RA", ax, date="recent");
 ```
