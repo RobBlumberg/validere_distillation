@@ -26,6 +26,7 @@ def get_distillation_profile(crude_name, date="recent"):
 
     Examples:
     ---------
+    >>> from get_distillation_profile import get_distillation_profile
     >>> crude = "MGS"
     >>> date = "recent"
     >>> get_distillation_profile(crude, date)
