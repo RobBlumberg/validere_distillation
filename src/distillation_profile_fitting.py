@@ -159,7 +159,7 @@ def gamma_mixture_distillation_profile(crude1, crude2, vol1, vol2):
     # determine temperature values at relevant remaining mass percentages
     distilliation_percentages = [0.05] + \
                                 [0.1*x for x in range(1, 10)] + \
-                                [0.95 + 0.99]
+                                [0.95, 0.99]
     temps = [np.absolute(mixture_model - x).argmin()-1
              for x in distilliation_percentages]
 
