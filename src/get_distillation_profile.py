@@ -41,7 +41,7 @@ def get_distillation_profile(crude_name, date="recent"):
 
     err_msg1 = "No crudes match the given acronym."
     if soup.text[-34:] == err_msg1:
-        print("No distillation samples available for specified crude.")
+        print(f"No distillation samples available for specified crude '{crude_name}'.")
         return
 
     err_msg2 = "No distillation samples available."
